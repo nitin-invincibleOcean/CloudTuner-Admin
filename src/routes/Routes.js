@@ -1,5 +1,6 @@
 import userServices from "../services/userServices.js";
 import organizationServices from "../services/organizationServices.js";
+import cloudAccountServices from "../services/cloudAccountServices.js";
 
 const routes = async (fastify, options) => {
   // User Routes
@@ -17,6 +18,14 @@ const routes = async (fastify, options) => {
       organizationRoutes.get("/", organizationServices.getAllOrganizations);
     },
     { prefix: "/api/organizations" }
+  );
+
+  // cloudAccount Routes
+  fastify.register(
+    async function (cloudAccountRoutes) {
+      cloudAccountRoutes.get("/", cloudAccountServices.getAllCloudAccounts);
+    },
+    { prefix: "/api/cloudAccounts" }
   );
 };
 
