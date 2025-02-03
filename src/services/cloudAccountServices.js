@@ -1,13 +1,13 @@
-import {pool} from '../config/db.js';
+import { pool } from "../config/db.js";
 
-const getAllCloudAccounts = async (req,reply) => {
-    let page = parseInt(req.query.page, 10) || 1;
-    let limit = parseInt(req.query.limit, 10) || 10;
-    if (page < 1) page = 1;
-    if (limit < 1 || limit > 100) limit = 10;
-    const offset = 0 * limit;
+const getAllCloudAccounts = async (req, reply) => {
+  let page = parseInt(req.query.page, 10) || 1;
+  let limit = parseInt(req.query.limit, 10) || 10;
+  if (page < 1) page = 1;
+  if (limit < 1 || limit > 100) limit = 10;
+  const offset = (page - 1) * limit;
 
-    const query = `
+  const query = `
     SELECT
     ca.deleted_at,
     ca.id,
@@ -20,13 +20,13 @@ const getAllCloudAccounts = async (req,reply) => {
   LIMIT ${limit} OFFSET ${offset};
 `;
 
-    try {
-        await pool.getConnection();
-        const cloudAccounts = await pool.query(query);
-        reply.send({'cloudAccounts':cloudAccounts});
-    } catch (err) {
-        throw err;
-    }
-}
+  try {
+    await pool.getConnection();
+    const cloudAccounts = await pool.query(query);
+    reply.send({ cloudAccounts: cloudAccounts });
+  } catch (err) {
+    throw err;
+  }
+};
 
-export default {getAllCloudAccounts};
+export default { getAllCloudAccounts };
